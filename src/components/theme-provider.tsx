@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { useTheme } from "@/store/theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const apply = useTheme((s) => s.apply);
+  const theme = useTheme((s) => s.theme);
 
   useEffect(() => {
-    apply();
-  }, [apply]);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return <>{children}</>;
 }

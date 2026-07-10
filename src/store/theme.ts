@@ -6,7 +6,6 @@ type Theme = "light" | "dark";
 interface ThemeState {
   theme: Theme;
   toggle: () => void;
-  apply: () => void;
 }
 
 export const useTheme = create<ThemeState>()(
@@ -16,10 +15,6 @@ export const useTheme = create<ThemeState>()(
       toggle: () => {
         const next = get().theme === "light" ? "dark" : "light";
         set({ theme: next });
-        document.documentElement.classList.toggle("dark", next === "dark");
-      },
-      apply: () => {
-        document.documentElement.classList.toggle("dark", get().theme === "dark");
       },
     }),
     { name: "cca-seguimiento-theme" },
