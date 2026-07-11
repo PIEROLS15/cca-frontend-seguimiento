@@ -8,10 +8,10 @@ interface TimelineProps {
 }
 
 function formatDate(dateString: string): string {
-  const cleaned = dateString.replace("Z", "").replace(/\.\d+$/, "");
+  const cleaned = dateString.replace(/\.\d+$/, "");
   const parts = cleaned.split("T");
   const dateParts = parts[0].split("-");
-  const timeParts = parts[1].split(":");
+  const timeParts = (parts[1] || "").replace(/(Z|[+-]\d{2}:\d{2})$/, "").split(":");
   const day = dateParts[2];
   const month = dateParts[1];
   const year = dateParts[0];
