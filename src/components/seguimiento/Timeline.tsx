@@ -7,6 +7,19 @@ interface TimelineProps {
   steps: TimelineStep[];
 }
 
+function formatDate(dateString: string): string {
+  const cleaned = dateString.replace("Z", "").replace(/\.\d+$/, "");
+  const parts = cleaned.split("T");
+  const dateParts = parts[0].split("-");
+  const timeParts = parts[1].split(":");
+  const day = dateParts[2];
+  const month = dateParts[1];
+  const year = dateParts[0];
+  const hours = timeParts[0];
+  const minutes = timeParts[1];
+  return `${day}/${month}/${year}, ${hours}:${minutes}`;
+}
+
 export function Timeline({ steps }: TimelineProps) {
   return (
     <ol className="relative">
@@ -58,7 +71,7 @@ export function Timeline({ steps }: TimelineProps) {
                 {step.label}
               </p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {step.date ?? "Pendiente"}
+                {step.date ? formatDate(step.date) : "Pendiente"}
               </p>
             </div>
           </li>

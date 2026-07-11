@@ -1,7 +1,6 @@
 "use client";
 
 import type { Result } from "@/types/seguimiento";
-import { DOC_META } from "@/data/mock-seguimiento";
 import { InfoTab } from "./InfoTab";
 import { Timeline } from "./Timeline";
 
@@ -11,8 +10,18 @@ interface ResultCardProps {
   onTabChange: (tab: "info" | "history") => void;
 }
 
+const TAG_STYLES: Record<string, { bg: string; fg: string }> = {
+  certificate: { bg: "var(--tag-cert-bg)", fg: "var(--tag-cert-fg)" },
+  certificate_request: { bg: "var(--tag-sol-bg)", fg: "var(--tag-sol-fg)" },
+  assembly_record_request: { bg: "var(--tag-acta-bg)", fg: "var(--tag-acta-fg)" },
+};
+
 export function ResultCard({ result, tab, onTabChange }: ResultCardProps) {
-  const meta = DOC_META[result.type];
+  const tagStyle = TAG_STYLES[result.documentType] ?? {
+    bg: "var(--tag-cert-bg)",
+    fg: "var(--tag-cert-fg)",
+  };
+
   const statusClasses =
     result.statusTone === "green"
       ? "bg-status-green-bg text-status-green-fg"
@@ -20,14 +29,13 @@ export function ResultCard({ result, tab, onTabChange }: ResultCardProps) {
 
   return (
     <div>
-      {/* Header */}
       <div className="p-4 sm:p-5 border-b border-border">
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
-            style={{ backgroundColor: meta.tagBg, color: meta.tagFg }}
+            style={{ backgroundColor: tagStyle.bg, color: tagStyle.fg }}
           >
-            {meta.label}
+            {result.title}
           </span>
           <span
             className={
@@ -39,12 +47,15 @@ export function ResultCard({ result, tab, onTabChange }: ResultCardProps) {
           </span>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">Código</span>
-          <span className="font-mono text-lg font-semibold text-foreground">{result.code}</span>
+          <span className="text-xs uppercase tracking-wide text-muted-foreground">
+            Código
+          </span>
+          <span className="font-mono text-lg font-semibold text-foreground">
+            {result.code}
+          </span>
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="flex border-b border-border">
         {(["info", "history"] as const).map((t) => (
           <button
@@ -64,7 +75,11 @@ export function ResultCard({ result, tab, onTabChange }: ResultCardProps) {
       </div>
 
       <div className="p-4 sm:p-5">
-        {tab === "info" ? <InfoTab result={result} /> : <Timeline steps={result.timeline} />}
+        {tab === "info" ? (
+          <InfoTab result={result} />
+        ) : (
+          <Timeline steps={result.timeline} />
+        )}
       </div>
     </div>
   );

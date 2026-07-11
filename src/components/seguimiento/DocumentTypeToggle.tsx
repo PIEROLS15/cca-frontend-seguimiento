@@ -2,7 +2,12 @@
 
 import { FileText, ClipboardList, Users } from "lucide-react";
 import type { DocType } from "@/types/seguimiento";
-import { DOC_META } from "@/data/mock-seguimiento";
+
+const DOC_META: Record<DocType, { label: string }> = {
+  certificado: { label: "Certificado" },
+  solicitud: { label: "Solicitud de certificado" },
+  acta: { label: "Acta de asamblea" },
+};
 
 const DOC_ICONS: Record<DocType, typeof FileText> = {
   certificado: FileText,
