@@ -1,4 +1,12 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9001";
+function getApiBaseUrl() {
+  const url = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!url) {
+    throw new Error("NEXT_PUBLIC_API_URL no está definida en .env");
+  }
+
+  return url;
+}
 
 export interface TrackingPerson {
   role: string;
@@ -40,6 +48,8 @@ export async function fetchDocumentTracking(
   documentType: string,
   code: string
 ): Promise<TrackingResponse> {
+  const API_BASE_URL = getApiBaseUrl();
+
   const res = await fetch(
     `${API_BASE_URL}/api/public/tracking/${encodeURIComponent(documentType)}/${encodeURIComponent(code)}`
   );
