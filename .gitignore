@@ -4,3 +4,5 @@ dist
 coverage
 .env
 *.log
+package-lock.json
+tsconfig.tsbuildinfo
