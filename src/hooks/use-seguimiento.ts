@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import type { DocType, Result, TimelineStepStatus, StatusTone } from "@/types/seguimiento";
 import {
@@ -12,12 +12,6 @@ const DOC_TYPE_MAP: Record<DocType, string> = {
   certificado: "certificado",
   solicitud: "solicitud-de-certificado",
   acta: "acta",
-};
-
-const REVERSE_DOC_TYPE_MAP: Record<string, DocType> = {
-  certificate: "certificado",
-  certificate_request: "solicitud",
-  assembly_record_request: "acta",
 };
 
 interface UseSeguimientoReturn {
@@ -104,7 +98,7 @@ export function useSeguimiento(): UseSeguimientoReturn {
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const initialLoadDone = useRef(false);
 
   const updateURL = useCallback(
     (type: DocType, searchCode: string, activeTab: "info" | "history") => {
@@ -165,16 +159,16 @@ export function useSeguimiento(): UseSeguimientoReturn {
     setResult(null);
     setError(null);
     setTab("info");
-    setInitialLoadDone(false);
+    initialLoadDone.current = false;
     window.location.href = "/";
   }, []);
 
   useEffect(() => {
-    if (initialCode && !initialLoadDone) {
-      setInitialLoadDone(true);
+    if (initialCode && !initialLoadDone.current) {
+      initialLoadDone.current = true;
       executeSearch(initialType, initialCode, initialTab);
     }
-  }, [initialCode, initialType, initialTab, initialLoadDone, executeSearch]);
+  }, [initialCode, initialType, initialTab, executeSearch]);
 
   return {
     docType,
