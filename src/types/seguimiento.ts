@@ -4,51 +4,35 @@ export type TimelineStepStatus = "done" | "active" | "pending";
 
 export type StatusTone = "amber" | "green";
 
+export interface Person {
+  role: string;
+  fullName: string;
+  documentNumber: string;
+}
+
+export interface Field {
+  label: string;
+  value: string;
+}
+
 export interface TimelineStep {
   label: string;
-  date?: string;
+  date?: string | null;
   status: TimelineStepStatus;
 }
 
-export interface BaseResult {
-  type: DocType;
+export interface TrackingResult {
+  documentType: string;
+  title: string;
   code: string;
   currentStatus: string;
   statusTone: StatusTone;
+  people: Person[];
+  fields: Field[];
   timeline: TimelineStep[];
 }
 
-export interface CertResult extends BaseResult {
-  type: "certificado";
-  fullName: string;
-  dni: string;
-  ubicacion: string;
-  tipoTerreno: string;
-  manzana: string;
-  lote: string;
-}
-
-export interface SolResult extends BaseResult {
-  type: "solicitud";
-  fullName: string;
-  dni: string;
-  descripcion: string;
-  tipoSolicitud: string;
-  sector: string;
-  destino: string;
-}
-
-export interface ActaResult extends BaseResult {
-  type: "acta";
-  comprador: string;
-  compradorDni: string;
-  vendedor: string;
-  vendedorDni: string;
-  ubicacion: string;
-  tipoTerreno: string;
-}
-
-export type Result = CertResult | SolResult | ActaResult;
+export type Result = TrackingResult;
 
 export interface DocMeta {
   label: string;

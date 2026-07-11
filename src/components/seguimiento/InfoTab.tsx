@@ -17,70 +17,43 @@ function Field({ label, value }: { label: string; value: string }) {
 }
 
 export function InfoTab({ result }: InfoTabProps) {
-  if (result.type === "acta") {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="rounded-lg border border-border p-3">
-            <p className="text-xs text-muted-foreground mb-1">Comprador</p>
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm font-semibold">{result.comprador}</p>
-            </div>
-            <div className="flex items-center gap-2 mt-1">
-              <IdCard className="h-3.5 w-3.5 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground">DNI {result.compradorDni}</p>
-            </div>
-          </div>
-          <div className="rounded-lg border border-border p-3">
-            <p className="text-xs text-muted-foreground mb-1">Vendedor</p>
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <p className="text-sm font-semibold">{result.vendedor}</p>
-            </div>
-            <div className="flex items-center gap-2 mt-1">
-              <IdCard className="h-3.5 w-3.5 text-muted-foreground" />
-              <p className="text-xs text-muted-foreground">DNI {result.vendedorDni}</p>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4 pt-2">
-          <Field label="Ubicación" value={result.ubicacion} />
-          <Field label="Tipo de terreno" value={result.tipoTerreno} />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-4">
-      <div>
-        <div className="flex items-center gap-2">
-          <User className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm font-semibold text-foreground">{result.fullName}</p>
+      {result.people.length > 0 && (
+        <div className="space-y-3">
+          {result.people.map((person, index) => (
+            <div key={index}>
+              {result.people.length > 1 && (
+                <p className="text-xs text-muted-foreground mb-1">{person.role}</p>
+              )}
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm font-semibold text-foreground">
+                  {person.fullName}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <IdCard className="h-3.5 w-3.5 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground">
+                  DNI {person.documentNumber}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex items-center gap-2 mt-1">
-          <IdCard className="h-3.5 w-3.5 text-muted-foreground" />
-          <p className="text-xs text-muted-foreground">DNI {result.dni}</p>
+      )}
+
+      {result.fields.length > 0 && (
+        <div
+          className={`grid gap-4 pt-2 border-t border-border ${
+            result.fields.length >= 2 ? "grid-cols-2" : "grid-cols-1"
+          }`}
+        >
+          {result.fields.map((field, index) => (
+            <Field key={index} label={field.label} value={field.value} />
+          ))}
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 pt-2 border-t border-border">
-        {result.type === "certificado" ? (
-          <>
-            <Field label="Ubicación" value={result.ubicacion} />
-            <Field label="Tipo de terreno" value={result.tipoTerreno} />
-            <Field label="Manzana" value={result.manzana} />
-            <Field label="Lote" value={result.lote} />
-          </>
-        ) : (
-          <>
-            <Field label="Descripción" value={result.descripcion} />
-            <Field label="Tipo de solicitud" value={result.tipoSolicitud} />
-            <Field label="Sector" value={result.sector} />
-            <Field label="Destino" value={result.destino} />
-          </>
-        )}
-      </div>
+      )}
     </div>
   );
 }

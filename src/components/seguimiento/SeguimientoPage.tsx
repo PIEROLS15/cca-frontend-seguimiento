@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 import { useSeguimiento } from "@/hooks/use-seguimiento";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -19,6 +20,8 @@ export function SeguimientoPage() {
     setTab,
     queried,
     result,
+    loading,
+    error,
     handleSearch,
     handleClear,
   } = useSeguimiento();
@@ -52,7 +55,12 @@ export function SeguimientoPage() {
         </div>
 
         <div className="mb-6">
-          <SearchForm value={code} onChange={setCode} onSubmit={handleSearch} />
+          <SearchForm
+            value={code}
+            onChange={setCode}
+            onSubmit={handleSearch}
+            loading={loading}
+          />
         </div>
 
         {queried && (
@@ -67,22 +75,35 @@ export function SeguimientoPage() {
           </div>
         )}
 
-        {queried && (
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-sm text-muted-foreground">
+              Consultando...
+            </span>
+          </div>
+        )}
+
+        {!loading && error && (
           <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-            {result ? (
-              <ResultCard result={result} tab={tab} onTabChange={setTab} />
-            ) : (
-              <NotFound />
-            )}
+            <NotFound message={error} />
+          </div>
+        )}
+
+        {!loading && !error && queried && result && (
+          <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+            <ResultCard result={result} tab={tab} onTabChange={setTab} />
+          </div>
+        )}
+
+        {!loading && !error && queried && !result && (
+          <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+            <NotFound />
           </div>
         )}
 
         {!queried && (
-          <p className="text-center text-xs text-muted-foreground mt-6">
-            Códigos de prueba: <code className="font-mono">023665</code>,{" "}
-            <code className="font-mono">003205-26</code>,{" "}
-            <code className="font-mono">018461</code>
-          </p>
+          <div className="mt-6" />
         )}
       </main>
 
