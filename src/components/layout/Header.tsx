@@ -1,6 +1,7 @@
 "use client";
 
 import { Sun, Moon } from "lucide-react";
+import Image from "next/image";
 import { useTheme } from "@/store/theme";
 
 export function Header() {
@@ -9,9 +10,11 @@ export function Header() {
   return (
     <header className="border-b border-border bg-muted/60 backdrop-blur">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 flex items-center gap-3">
-        <img
+        <Image
           src="/images/logo_2.png"
           alt="Comunidad Campesina de Asia"
+          width={40}
+          height={40}
           className="h-10 w-auto object-contain shrink-0"
         />
         <div className="flex-1 min-w-0">

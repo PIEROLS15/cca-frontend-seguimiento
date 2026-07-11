@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSeguimiento } from "@/hooks/use-seguimiento";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -28,9 +29,11 @@ export function SeguimientoPage() {
 
       <main className="flex-1 mx-auto w-full max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
         <div className="flex justify-center mb-6">
-          <img
+          <Image
             src="/images/logo.png"
             alt="Comunidad Campesina de Asia"
+            width={192}
+            height={96}
             className="h-20 sm:h-24 w-auto"
           />
         </div>
