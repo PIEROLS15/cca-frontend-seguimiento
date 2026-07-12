@@ -2,7 +2,7 @@ export type DocType = "certificado" | "solicitud" | "acta";
 
 export type TimelineStepStatus = "done" | "active" | "pending";
 
-export type StatusTone = "amber" | "green";
+export type StatusTone = "amber" | "green" | "red";
 
 export interface Person {
   role: string;
@@ -19,6 +19,7 @@ export interface TimelineStep {
   label: string;
   date?: string | null;
   status: TimelineStepStatus;
+  note?: string | null;
 }
 
 export interface TrackingResult {

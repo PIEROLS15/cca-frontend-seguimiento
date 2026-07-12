@@ -25,7 +25,9 @@ export function ResultCard({ result, tab, onTabChange }: ResultCardProps) {
   const statusClasses =
     result.statusTone === "green"
       ? "bg-status-green-bg text-status-green-fg"
-      : "bg-status-amber-bg text-status-amber-fg";
+      : result.statusTone === "red"
+        ? "bg-destructive/10 text-destructive border border-destructive/20"
+        : "bg-status-amber-bg text-status-amber-fg";
 
   return (
     <div>

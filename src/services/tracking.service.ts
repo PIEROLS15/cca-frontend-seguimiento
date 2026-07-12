@@ -23,6 +23,7 @@ export interface TrackingHistoryStep {
   status: string;
   date: string | null;
   done: boolean;
+  note?: string | null;
 }
 
 export interface TrackingResponse {
