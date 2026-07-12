@@ -42,7 +42,8 @@ function mapTimelineStatus(done: boolean, date: string | null, index: number, hi
   return "pending";
 }
 
-function mapStatusTone(history: TrackingResponse["history"]): StatusTone {
+function mapStatusTone(currentStatus: string, history: TrackingResponse["history"]): StatusTone {
+  if (currentStatus === "Observado") return "red";
   const allDone = history.every((step) => step.done);
   return allDone ? "green" : "amber";
 }
@@ -52,6 +53,7 @@ function transformResponse(data: TrackingResponse): Result {
     label: step.status,
     date: step.date,
     status: mapTimelineStatus(step.done, step.date, i, data.history),
+    note: step.note || null,
   }));
 
   return {
@@ -59,7 +61,7 @@ function transformResponse(data: TrackingResponse): Result {
     title: data.title,
     code: data.code,
     currentStatus: data.currentStatus,
-    statusTone: mapStatusTone(data.history),
+    statusTone: mapStatusTone(data.currentStatus, data.history),
     people: data.information.people,
     fields: data.information.fields,
     timeline,

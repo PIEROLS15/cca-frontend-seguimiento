@@ -26,6 +26,13 @@ export function Timeline({ steps }: TimelineProps) {
       {steps.map((step, i) => {
         const isLast = i === steps.length - 1;
         const nextDone = !isLast && steps[i + 1].status !== "pending";
+        const isObserved = step.label === "Observado";
+        const doneCircleClasses = isObserved
+          ? "bg-destructive/10 text-destructive"
+          : "bg-status-green-fg text-status-green-bg";
+        const activeCircleClasses = isObserved
+          ? "bg-destructive/10 text-destructive animate-pulse"
+          : "bg-status-amber-fg text-status-amber-bg animate-pulse";
         return (
           <li key={i} className="flex gap-3 pb-5 last:pb-0 relative">
             <div className="flex flex-col items-center">
@@ -33,9 +40,9 @@ export function Timeline({ steps }: TimelineProps) {
                 className={
                   "h-8 w-8 rounded-full flex items-center justify-center shrink-0 z-10 " +
                   (step.status === "done"
-                    ? "bg-status-green-fg text-status-green-bg"
+                    ? doneCircleClasses
                     : step.status === "active"
-                      ? "bg-status-amber-fg text-status-amber-bg animate-pulse"
+                      ? activeCircleClasses
                       : "bg-muted text-muted-foreground border border-border")
                 }
               >
@@ -52,9 +59,9 @@ export function Timeline({ steps }: TimelineProps) {
                   className={
                     "w-0.5 flex-1 mt-1 " +
                     (step.status === "done" && nextDone
-                      ? "bg-status-green-fg"
+                      ? (isObserved ? "bg-destructive" : "bg-status-green-fg")
                       : step.status === "done"
-                        ? "bg-gradient-to-b from-status-green-fg to-border"
+                        ? (isObserved ? "bg-gradient-to-b from-destructive to-border" : "bg-gradient-to-b from-status-green-fg to-border")
                         : "bg-border")
                   }
                   style={{ minHeight: "1.5rem" }}
@@ -65,7 +72,11 @@ export function Timeline({ steps }: TimelineProps) {
               <p
                 className={
                   "text-sm font-medium " +
-                  (step.status === "pending" ? "text-muted-foreground" : "text-foreground")
+                  (step.status === "pending"
+                    ? "text-muted-foreground"
+                    : isObserved
+                      ? "text-destructive"
+                      : "text-foreground")
                 }
               >
                 {step.label}
@@ -73,6 +84,11 @@ export function Timeline({ steps }: TimelineProps) {
               <p className="text-xs text-muted-foreground mt-0.5">
                 {step.date ? formatDate(step.date) : "Pendiente"}
               </p>
+              {step.note && (
+                <p className="mt-1 text-xs text-muted-foreground whitespace-pre-line">
+                  {step.note}
+                </p>
+              )}
             </div>
           </li>
         );
