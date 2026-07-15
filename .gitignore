@@ -3,6 +3,7 @@ node_modules
 dist
 coverage
 .env
+test-results/
 *.log
 package-lock.json
 tsconfig.tsbuildinfo
