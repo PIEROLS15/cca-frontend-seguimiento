@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL_TEST}
+    ports:
+      - "127.0.0.1:${FRONTEND_TEST_PORT}:9002"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL_TEST}
+      NEXT_PUBLIC_API_URL_TEST: ${NEXT_PUBLIC_API_URL_TEST}
+      FRONTEND_TEST_URL: ${FRONTEND_TEST_URL}
+      PORT: 9002
+      HOST: 0.0.0.0

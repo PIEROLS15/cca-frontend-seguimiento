@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  lint_build:
+  lint_test_build:
     name: Lint, Build
     runs-on: ubuntu-latest
 
