@@ -175,7 +175,7 @@ Para limpiar el entorno de pruebas:
 docker compose --env-file .env -p cca-frontend-seguimiento-test -f docker-compose.test.yml down
 ```
 
-El script `deploy/test/deploy.sh` replica el mismo flujo para el VPS.
+El script `deploy/test/deploy.sh` replica el despliegue de test en el VPS con `--build` y el workflow `e2e.yml` ejecuta Playwright contra ese entorno.
 
 ---
 
